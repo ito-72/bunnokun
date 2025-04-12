@@ -3,32 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <title>ナンバリング重複チェック</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; }
-    .group { margin-bottom: 10px; }
-    input[type="text"] { width: 300px; margin-right: 10px; }
-    input[type="number"] { width: 80px; }
-    .result { margin-top: 20px; }
-    .error { color: red; }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <h1>ナンバリングチェックツール</h1>
 
-  <div id="inputContainer">
-    <!-- グループごとの入力欄がここに追加される -->
-  </div>
+  <div id="inputArea">
+    <div>
+      <button id="addRowBtn">行を追加<br>Ctrl+Enter</button>
+      <button id="checkBtn">チェックする</button>
+    </div>
 
-  <button id="addRowBtn">＋行を追加</button>
-  <button id="checkBtn">チェックする</button>
+    <div id="inputContainer"></div>
+  </div>
 
   <div id="resultArea" class="result"></div>
 
   <script>
-    // ステップ 1: 初期行を1つ追加
     const container = document.getElementById("inputContainer");
     document.getElementById("addRowBtn").addEventListener("click", addRow);
+
     function addRow() {
       const div = document.createElement("div");
       div.className = "group";
@@ -37,10 +33,13 @@
         <input type="number" placeholder="冊数" class="countInput">
       `;
       container.appendChild(div);
+      div.querySelector("input").focus();
     }
-    addRow(); // 最初の行
 
-    // ステップ 2: チェックボタン処理
+    // 最初の1行を表示
+    addRow();
+
+    // チェック処理
     document.getElementById("checkBtn").addEventListener("click", async () => {
       const inputs = Array.from(document.querySelectorAll(".group"));
       const payload = inputs.map(group => ({
@@ -54,13 +53,27 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ groups: payload })
         });
+
         const data = await res.json();
-        document.getElementById("resultArea").innerHTML = data.message.replace(/\n/g, "<br>");
+        document.getElementById("resultArea").innerHTML = data.message
+          .replace(/✅ /g, "<strong>✔</strong> ")
+          .replace(/❌ /g, "<strong style='color:#d33'>✖</strong> ")
+          .replace(/⚠️ /g, "<strong style='color:#a67c00'>！</strong> ")
+          .replace(/\n/g, "<br>");
       } catch (err) {
         console.error("通信エラー:", err);
         document.getElementById("resultArea").innerHTML = `<span class="error">エラーが発生しました</span>`;
       }
     });
+
+    // Ctrl + Enter で行追加
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && e.ctrlKey) {
+        e.preventDefault();
+        addRow();
+      }
+    });
   </script>
+
 </body>
 </html>

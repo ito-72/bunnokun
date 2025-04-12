@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap');
+
+body {
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  background: #fdfcf7;
+  color: #1c1c2e;
+  padding: 40px;
+  margin: 0;
+}
+
+h1 {
+  margin-bottom: 1em;
+  color: #1c1c2e;
+  border-bottom: 2px solid #bfa146;
+  display: inline-block;
+}
+
+#inputArea {
+  text-align: left;
+}
+
+.group {
+  margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 200px;
+  padding: 8px;
+  margin-right: 10px;
+  background: #fffef9;
+  color: #1c1c2e;
+  border: 1px solid #c4b7a6;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+input:focus {
+  border-color: #bfa146;
+  outline: none;
+}
+
+button {
+  background: linear-gradient(45deg, #bfa146, #e0c385);
+  color: #1c1c2e;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  height: 42px;
+}
+
+button:hover {
+  background: #e0c385;
+}
+
+#resultArea {
+  margin-top: 30px;
+  background: #fffef9;
+  color: #1c1c2e;
+  padding: 20px;
+  border: 1px solid #c4b7a6;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font-family: monospace;
+}
+
+/* 印刷用 */
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 20pt;
+  }
+  h1, #inputArea, button {
+    display: none;
+  }
+  #resultArea {
+    background: #fff;
+    color: #000;
+    border: none;
+    font-size: 26pt;
+  }
+}
